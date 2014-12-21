@@ -41,12 +41,19 @@ public class Snowman : MonoBehaviour
     {
         //če je bil prejšnji patrol point manjši od od polovice
         float randomX = 0;
-        if(patrolPoint.x < ground.transform.position.x)
-            randomX = Random.Range(ground.transform.localScale.x/2, ground.transform.localScale.x);
+        if (patrolPoint.x < ground.transform.position.x)
+        {
+            print("A");
+            randomX = Random.Range(ground.transform.localScale.x / 2, ground.transform.localScale.x);
+        }
         else
+        {
+            print("B");
             randomX = Random.Range(0, ground.transform.localScale.x / 2);
+        }
         float randomXpos = (ground.transform.position.x - ground.transform.localScale.x / 2) + randomX ;
         patrolPoint = new Vector2(randomXpos , transform.position.y);
+        //print(ground.transform.localScale.x.ToString());
     }
 
 	void moveLeft(float speed)
