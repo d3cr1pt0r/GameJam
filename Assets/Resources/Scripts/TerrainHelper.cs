@@ -20,10 +20,6 @@ public class TerrainHelper : MonoBehaviour
 			floors.Add (CreateFloor(new Vector3(pos.x, pos.y, 5), 8));
 		}
 
-		for (int i=0;i<floors.Count;i++)
-		{
-			//Debug.Log (i.ToString() + ": " + floors[i].GetPosition().ToString());
-		}
 	}
 
 	public Floor CreateFloor(Vector3 pos, int length)

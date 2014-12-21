@@ -5,7 +5,7 @@ public class SantaBehaviour : MonoBehaviour {
 
     //PUBLIC varibales
     //hitrost premkanja
-    public float movementSpeed;
+    public float movementSpeed = 0.02f;
     public float jumpForce;
 
     //PRIVATE variables
@@ -39,7 +39,7 @@ public class SantaBehaviour : MonoBehaviour {
     private void Movement()
     {
         Vector3 tmp = transform.position;
-        tmp.x += movementX * 0.05f;
+		tmp.x += movementX * movementSpeed;
         transform.position = tmp;
     }
 
@@ -70,7 +70,6 @@ public class SantaBehaviour : MonoBehaviour {
         {
             SantaAnimator.SetBool("jump", true);
             rigidbody2D.AddForce(new Vector2(0,jumpForce));
-            print("jump");
         }
     }
 
