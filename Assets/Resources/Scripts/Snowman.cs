@@ -7,6 +7,8 @@ public class Snowman : MonoBehaviour
 
 	private bool flipped;
 
+    private bool movingLeft = false;
+
     private GameObject ground;
     private Vector2 patrolPoint;
 
@@ -26,23 +28,33 @@ public class Snowman : MonoBehaviour
 		{
 			moveRight(speed);
 		}*/
+        //print("patrol point:" + patrolPoint.x + " snowmanpoint:" + gameObject.transform.position.x + "moving: " + movingLeft);
 
-        if (ground_collision && Mathf.Round(patrolPoint.x) == Mathf.Round(gameObject.transform.position.x))
+        if (ground_collision && gameObject.transform.position.x < patrolPoint.x && movingLeft)
+        {
+            movingLeft = false;
             RandomPoint();
-        if (ground_collision && patrolPoint.x < gameObject.transform.position.x)
+        }
+
+        if (ground_collision && gameObject.transform.position.x > patrolPoint.x && movingLeft == false)
+        {
+            movingLeft = true;
+            RandomPoint();
+        }
+
+        if (ground_collision && patrolPoint.x < gameObject.transform.position.x && movingLeft)
             moveLeft(speed);
-        if(ground_collision && patrolPoint.x > gameObject.transform.position.x)
+        if(ground_collision && patrolPoint.x > gameObject.transform.position.x && movingLeft == false)
             moveRight(speed);
 
-        //print(Mathf.RoundToInt(gameObject.transform.position.x).ToString() + " patrol:" + Mathf.RoundToInt(patrolPoint.x).ToString()  );
 	}
 
     void RandomPoint()
     {
         //če je bil prejšnji patrol point manjši od od polovice
         float randomX = 0;
-        if(patrolPoint.x < ground.transform.position.x)
-            randomX = Random.Range(ground.transform.localScale.x/2, ground.transform.localScale.x);
+        if (patrolPoint.x < ground.transform.position.x)
+            randomX = Random.Range(ground.transform.localScale.x / 2, ground.transform.localScale.x);
         else
             randomX = Random.Range(0, ground.transform.localScale.x / 2);
         float randomXpos = (ground.transform.position.x - ground.transform.localScale.x / 2) + randomX ;
