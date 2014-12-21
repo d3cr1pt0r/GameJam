@@ -10,7 +10,7 @@ public class Floor
 	{
 		this.length = length;
 		tile = GameObject.Instantiate (TilePrefab, pos, Quaternion.identity) as GameObject;
-		tile.renderer.materials [0].mainTextureScale = new Vector2 (length, 1);
+		tile.renderer.materials [0].mainTextureScale = new Vector2 ((tile.transform.localScale.x * length) / 2.0f, 1);
 
 		Vector3 curScale = tile.transform.localScale;
 		curScale.x = 0.3f * length;
