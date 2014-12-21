@@ -27,14 +27,14 @@ public class Snowman : MonoBehaviour
 			moveRight(speed);
 		}*/
 
-        if (Mathf.RoundToInt(patrolPoint.x) == Mathf.RoundToInt(gameObject.transform.position.x))
+        if (ground_collision && Mathf.RoundToInt(patrolPoint.x) == Mathf.RoundToInt(gameObject.transform.position.x))
             RandomPoint();
         if (ground_collision && patrolPoint.x < gameObject.transform.position.x)
             moveLeft(speed);
         if(ground_collision && patrolPoint.x > gameObject.transform.position.x)
             moveRight(speed);
 
-        print(Mathf.RoundToInt(gameObject.transform.position.x).ToString() + " patrol:" + Mathf.RoundToInt(patrolPoint.x).ToString()  );
+        //print(Mathf.RoundToInt(gameObject.transform.position.x).ToString() + " patrol:" + Mathf.RoundToInt(patrolPoint.x).ToString()  );
 	}
 
     void RandomPoint()
