@@ -14,6 +14,9 @@ public class CameraFollow : MonoBehaviour
 	{
 		Vector3 camPos = Camera.main.transform.position;
 		camPos.y = santa.transform.position.y;
+		camPos.x = santa.transform.position.x;
+
 		Camera.main.transform.position = camPos;
+
 	}
 }
