@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TerrainHelper : MonoBehaviour
 {
 	public GameObject TilePrefab;
+	public List<Floor> floors;
 
 	void Start ()
 	{
-		
+		floors = new List<Floor> ();
 	}
 
 	void Update ()
@@ -15,21 +17,18 @@ public class TerrainHelper : MonoBehaviour
 		if(Input.GetMouseButtonDown(0))
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			CreateFloor(new Vector2(pos.x, pos.y), 5);
+			floors.Add (CreateFloor(new Vector3(pos.x, pos.y, 5), 8));
 		}
-	}
 
-	private void CreateTile(Vector2 pos)
-	{
-		Instantiate (TilePrefab, new Vector3 (pos.x, pos.y, 5), Quaternion.identity);
-	}
-
-	public void CreateFloor(Vector2 pos, int length)
-	{
-		for (float i=pos.x; i<=pos.x+(length*TilePrefab.transform.localScale.x); i+= TilePrefab.transform.localScale.x)
+		for (int i=0;i<floors.Count;i++)
 		{
-			CreateTile(new Vector2(i, pos.y));
+			Debug.Log (i.ToString() + ": " + floors[i].GetPosition().ToString());
 		}
+	}
+
+	public Floor CreateFloor(Vector3 pos, int length)
+	{
+		return new Floor (TilePrefab, pos, length);
 	}
 
 }
