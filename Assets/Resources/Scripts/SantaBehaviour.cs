@@ -22,7 +22,7 @@ public class SantaBehaviour : MonoBehaviour {
         facingRight = true;
 	}
 	
-	void FixedUpdate () {
+	void Update () {
         movementX = Input.GetAxis("Horizontal");
         //če je movement v drugo smer flipnemo. 
         CheckFlip(movementX);
@@ -70,6 +70,7 @@ public class SantaBehaviour : MonoBehaviour {
         {
             SantaAnimator.SetBool("jump", true);
             rigidbody2D.AddForce(new Vector2(0,jumpForce));
+            print("jump");
         }
     }
 

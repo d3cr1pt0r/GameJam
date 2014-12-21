@@ -22,7 +22,7 @@ public class TerrainHelper : MonoBehaviour
 
 		for (int i=0;i<floors.Count;i++)
 		{
-			Debug.Log (i.ToString() + ": " + floors[i].GetPosition().ToString());
+			//Debug.Log (i.ToString() + ": " + floors[i].GetPosition().ToString());
 		}
 	}
 
