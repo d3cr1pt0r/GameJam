@@ -76,7 +76,15 @@ public class SantaBehaviour : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag.Equals("Ground"))
+        /*if (coll.gameObject.tag.Equals("Ground"))
+        {
+            SantaAnimator.SetBool("jump", false);
+        }*/
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag.Equals("Ground"))
         {
             SantaAnimator.SetBool("jump", false);
         }
