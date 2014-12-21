@@ -27,7 +27,7 @@ public class Snowman : MonoBehaviour
 			moveRight(speed);
 		}*/
 
-        if (ground_collision && Mathf.RoundToInt(patrolPoint.x) == Mathf.RoundToInt(gameObject.transform.position.x))
+        if (ground_collision && Mathf.Round(patrolPoint.x) == Mathf.Round(gameObject.transform.position.x))
             RandomPoint();
         if (ground_collision && patrolPoint.x < gameObject.transform.position.x)
             moveLeft(speed);
@@ -39,7 +39,12 @@ public class Snowman : MonoBehaviour
 
     void RandomPoint()
     {
-        float randomX = Random.Range(1, ground.transform.localScale.x);
+        //če je bil prejšnji patrol point manjši od od polovice
+        float randomX = 0;
+        if(patrolPoint.x < ground.transform.position.x)
+            randomX = Random.Range(ground.transform.localScale.x/2, ground.transform.localScale.x);
+        else
+            randomX = Random.Range(0, ground.transform.localScale.x / 2);
         float randomXpos = (ground.transform.position.x - ground.transform.localScale.x / 2) + randomX ;
         patrolPoint = new Vector2(randomXpos , transform.position.y);
     }
