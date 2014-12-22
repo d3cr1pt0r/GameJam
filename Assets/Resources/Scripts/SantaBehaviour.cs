@@ -81,7 +81,7 @@ public class SantaBehaviour : MonoBehaviour {
             BoxCollider2D tmp = GetComponent<BoxCollider2D>();
             tmp.size = new Vector2(tmp.size.x, 0.49f);
             SantaAnimator.SetBool("hide", false);
-            gameObject.layer = 0;
+            gameObject.layer = 11;
         }
     }
 
