@@ -26,14 +26,17 @@ public class SantaBehaviour : MonoBehaviour {
 	}
 	
 	void Update () {
-        movementX = Input.GetAxis("Horizontal");
-        //handle jump
-        Jump();
-        //handle hide
-        Hide();
+        if (!SantaAnimator.GetBool("death"))
+        {
+            movementX = Input.GetAxis("Horizontal");
+            //handle jump
+            Jump();
+            //handle hide
+            Hide();
 
-        //nastavimo hitrost v animatorju
-        SantaAnimator.SetFloat("movement",Mathf.Abs(movementX));
+            //nastavimo hitrost v animatorju
+            SantaAnimator.SetFloat("movement", Mathf.Abs(movementX));
+        }
 
         if(SantaAnimator.GetBool("death"))
         {
@@ -55,8 +58,6 @@ public class SantaBehaviour : MonoBehaviour {
         //handle movement
         if (!SantaAnimator.GetBool("hide") && !SantaAnimator.GetBool("death"))
             Movement();
-
-        
     }
 
     private void Movement()

@@ -7,10 +7,10 @@ public class Snowman : MonoBehaviour
 
 	private bool flipped;
 
-    private bool movingLeft = false;
+    private bool movingLeft = true;
 
     private GameObject ground;
-    private Vector2 patrolPoint;
+    private float patrolPoint;
 
     private Animator snowmanAnimator;
 
@@ -24,41 +24,38 @@ public class Snowman : MonoBehaviour
 	void Update ()
 	{
         if (snowmanAnimator.GetBool("death") == false)
+        {
             SnowmanLogic();
+
+            if (ground_collision && movingLeft)
+                moveLeft(speed);
+            if (ground_collision && !movingLeft)
+                moveRight(speed);
+
+        }
 	}
 
     void SnowmanLogic()
     {
-        //Debug.Log("gameobject:" + gameObject.transform.position.x + " patrolpoint:" + patrolPoint.x + " movingLeft:" + movingLeft);
-        if (ground_collision && gameObject.transform.position.x <  patrolPoint.x && movingLeft)
-        {
-            movingLeft = false;
+        if (ground_collision && (movingLeft && transform.position.x < patrolPoint || !movingLeft && transform.position.x > patrolPoint))
             RandomPoint();
-        }
-        else if (ground_collision && gameObject.transform.position.x > patrolPoint.x && movingLeft == false)
-        {
-            movingLeft = true;
-            RandomPoint();
-        }
-
-        if (ground_collision && patrolPoint.x < gameObject.transform.position.x && movingLeft)
-            moveLeft(speed);
-        if (ground_collision && patrolPoint.x > gameObject.transform.position.x && movingLeft == false)
-            moveRight(speed);
     }
 
     void RandomPoint()
     {
-        //če je bil prejšnji patrol point manjši od od polovice
-        float randomX = 0;
-        if (Mathf.Abs(patrolPoint.x) < ground.transform.position.x)
-            randomX = Random.Range(ground.transform.localScale.x / 2, ground.transform.localScale.x);
+        if(gameObject.transform.position.x > ground.transform.position.x)
+        {
+            //generiraj levo
+            patrolPoint = Random.Range(ground.transform.position.x - ground.transform.localScale.x / 2, ground.transform.position.x);
+            movingLeft = true;
+        }
         else
-            randomX = Random.Range(0, ground.transform.localScale.x / 2);
-       
-        float randomXpos = (ground.transform.position.x - Mathf.Abs(ground.transform.localScale.x) / 2) + randomX ;
-        print(randomXpos);
-        patrolPoint = new Vector2(randomXpos , transform.position.y);
+        {
+            //generiraj desno
+            patrolPoint = Random.Range(ground.transform.position.x,ground.transform.localScale.x / 2 + ground.transform.position.x);
+            movingLeft = false;
+        }
+            
     }
 
 	void moveLeft(float speed)
