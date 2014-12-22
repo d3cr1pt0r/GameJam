@@ -50,7 +50,7 @@ public class TerrainHelper : MonoBehaviour
 			new_pos = new Vector3(max_x, previous.y+max_up, 5);
 
 			float dist = Vector3.Distance(previous, new_pos);
-			Debug.Log (dist);
+			//Debug.Log (dist);
 
 			while(!inRange(new_pos,previous))
 			{
