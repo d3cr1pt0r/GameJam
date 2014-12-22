@@ -6,19 +6,24 @@ public class TerrainHelper : MonoBehaviour
 {
 	public GameObject TilePrefab;
 	public GameObject SnowmanPrefab;
-	
+	public GameObject XmasTreePrefab;
+	public static int levelCount = 3;
 	public List<Floor> floors;
 	public List<Floor> enemy;
-	
+	public List<Floor> xmasTree;
+
 	public Vector3 previous;
 	void Start ()
 	{
 		floors = new List<Floor> ();
 		enemy = new List<Floor> ();
 		previous = TilePrefab.transform.position;
-		generateTiles (50);
+		generateTiles (levelCount);
 		repositionTiles ();
 		spawnSnowman ();
+		spawnXmasTree();
+		levelCount = levelCount + 5;
+
 		//generateTile ();
 		//generateTile ();
 		
@@ -51,7 +56,15 @@ public class TerrainHelper : MonoBehaviour
 			}
 		}
 	}
-	
+	void spawnXmasTree()
+	{
+		Vector3 pos = floors[floors.Count-1].GetPosition();
+		pos.y += 0.5f;
+		XmasTreePrefab = GameObject.Instantiate (XmasTreePrefab, pos, Quaternion.identity) as GameObject;
+
+		//xmasTree.Add (CreateXMasTree(new Vector3(pos.x,pos.y, 5)));
+
+	}
 	
 	
 	void generateTiles(int num)
@@ -94,7 +107,7 @@ public class TerrainHelper : MonoBehaviour
 			
 			previous.y += max_up;
 			
-			
+
 		}
 	}
 	void repositionTiles()
@@ -129,5 +142,9 @@ public class TerrainHelper : MonoBehaviour
 	public Floor CreateEnemy(Vector3 pos)
 	{
 		return new Floor (SnowmanPrefab, pos);
+	}
+	public Floor CreateXMasTree(Vector3 pos)
+	{
+		return new Floor (XmasTreePrefab, pos);
 	}
 }
