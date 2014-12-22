@@ -7,6 +7,7 @@ public class SantaBehaviour : MonoBehaviour {
     //hitrost premkanja
     public float movementSpeed = 0.02f;
     public float jumpForce;
+    public Transform spawnPoint;
 
     //PRIVATE variables
     //kam je santa obrjen.
@@ -14,6 +15,8 @@ public class SantaBehaviour : MonoBehaviour {
     private Animator SantaAnimator;
 
     private float movementX;
+
+    private float time = 0;
 
 
 	void Start () {
@@ -24,23 +27,61 @@ public class SantaBehaviour : MonoBehaviour {
 	
 	void Update () {
         movementX = Input.GetAxis("Horizontal");
-        //če je movement v drugo smer flipnemo. 
-        CheckFlip(movementX);
-        //handle movement
-        Movement();
         //handle jump
         Jump();
+        //handle hide
+        Hide();
 
         //nastavimo hitrost v animatorju
         SantaAnimator.SetFloat("movement",Mathf.Abs(movementX));
 
+        if(SantaAnimator.GetBool("death"))
+        {
+            time += Time.deltaTime;
+            if (time > 1.5f)
+            {
+                SantaAnimator.SetBool("death",false);
+                time = 0;
+                gameObject.transform.position = spawnPoint.transform.position;
+            }
+        }
+
 	}
+
+    void FixedUpdate()
+    {
+        //če je movement v drugo smer flipnemo. 
+        CheckFlip(movementX);
+        //handle movement
+        if (!SantaAnimator.GetBool("hide") && !SantaAnimator.GetBool("death"))
+            Movement();
+
+        
+    }
 
     private void Movement()
     {
         Vector3 tmp = transform.position;
 		tmp.x += movementX * movementSpeed;
         transform.position = tmp;
+    }
+
+    void Hide()
+    {
+        if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            BoxCollider2D tmp = GetComponent<BoxCollider2D>();
+            tmp.size = new Vector2(tmp.size.x,0.25f);
+            SantaAnimator.SetBool("hide", true);
+            gameObject.layer = 8;
+        }
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            BoxCollider2D tmp = GetComponent<BoxCollider2D>();
+            tmp.size = new Vector2(tmp.size.x, 0.49f);
+            SantaAnimator.SetBool("hide", false);
+            gameObject.layer = 0;
+        }
     }
 
     private void CheckFlip(float movementX)
@@ -75,10 +116,11 @@ public class SantaBehaviour : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        /*if (coll.gameObject.tag.Equals("Ground"))
+        if (coll.gameObject.tag.Equals("Enemy"))
         {
-            SantaAnimator.SetBool("jump", false);
-        }*/
+            rigidbody2D.AddForce(new Vector2(0, 150));
+            SantaAnimator.SetBool("death", true);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

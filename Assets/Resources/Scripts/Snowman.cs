@@ -12,24 +12,23 @@ public class Snowman : MonoBehaviour
     private GameObject ground;
     private Vector2 patrolPoint;
 
+    private Animator snowmanAnimator;
+
     private bool ground_collision = false;
 	void Start ()
 	{
 		flipped = false;
+        snowmanAnimator = GetComponent<Animator>();
 	}
 
 	void Update ()
 	{
-		/*if (Input.GetKey (KeyCode.A))
-		{
-			moveLeft (speed);
-		}
-		if (Input.GetKey (KeyCode.D))
-		{
-			moveRight(speed);
-		}*/
-        //print("patrol point:" + patrolPoint.x + " snowmanpoint:" + gameObject.transform.position.x + "moving: " + movingLeft);
+        if (snowmanAnimator.GetBool("death") == false)
+            SnowmanLogic();
+	}
 
+    void SnowmanLogic()
+    {
         if (ground_collision && gameObject.transform.position.x < patrolPoint.x && movingLeft)
         {
             movingLeft = false;
@@ -44,10 +43,9 @@ public class Snowman : MonoBehaviour
 
         if (ground_collision && patrolPoint.x < gameObject.transform.position.x && movingLeft)
             moveLeft(speed);
-        if(ground_collision && patrolPoint.x > gameObject.transform.position.x && movingLeft == false)
+        if (ground_collision && patrolPoint.x > gameObject.transform.position.x && movingLeft == false)
             moveRight(speed);
-
-	}
+    }
 
     void RandomPoint()
     {
@@ -92,6 +90,17 @@ public class Snowman : MonoBehaviour
             ground_collision = true;
             ground = coll.gameObject;
             RandomPoint();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag.Equals("Player"))
+        {
+            snowmanAnimator.SetBool("death", true);
+            BoxCollider2D tmp = GetComponent<BoxCollider2D>();
+            tmp.size = new Vector2(tmp.size.x, 0.25f);
+            gameObject.layer = 10;
         }
     }
 }
