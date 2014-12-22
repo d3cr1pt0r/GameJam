@@ -4,6 +4,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - TilePrefab: {fileID: 100000, guid: 0faf29993474f0943ab6bebfc9ae8487, type: 2}
+  - SnowmanPrefab: {fileID: 100000, guid: f06dad503fd9ca44fb14655c706820ac, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
