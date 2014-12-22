@@ -51,7 +51,7 @@ public class Snowman : MonoBehaviour
     {
         //če je bil prejšnji patrol point manjši od od polovice
         float randomX = 0;
-        if (Mathf.Abs(patrolPoint.x) < ground.transform.position.x)
+        if (patrolPoint.x < ground.transform.position.x)
             randomX = Random.Range(ground.transform.localScale.x / 2, ground.transform.localScale.x);
         else
             randomX = Random.Range(0, ground.transform.localScale.x / 2);
