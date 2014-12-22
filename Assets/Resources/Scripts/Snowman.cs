@@ -29,13 +29,13 @@ public class Snowman : MonoBehaviour
 
     void SnowmanLogic()
     {
-        if (ground_collision && gameObject.transform.position.x < patrolPoint.x && movingLeft)
+        //Debug.Log("gameobject:" + gameObject.transform.position.x + " patrolpoint:" + patrolPoint.x + " movingLeft:" + movingLeft);
+        if (ground_collision && gameObject.transform.position.x <  patrolPoint.x && movingLeft)
         {
             movingLeft = false;
             RandomPoint();
         }
-
-        if (ground_collision && gameObject.transform.position.x > patrolPoint.x && movingLeft == false)
+        else if (ground_collision && gameObject.transform.position.x > patrolPoint.x && movingLeft == false)
         {
             movingLeft = true;
             RandomPoint();
@@ -55,7 +55,9 @@ public class Snowman : MonoBehaviour
             randomX = Random.Range(ground.transform.localScale.x / 2, ground.transform.localScale.x);
         else
             randomX = Random.Range(0, ground.transform.localScale.x / 2);
-        float randomXpos = (ground.transform.position.x - ground.transform.localScale.x / 2) + randomX ;
+       
+        float randomXpos = (ground.transform.position.x - Mathf.Abs(ground.transform.localScale.x) / 2) + randomX ;
+        print(randomXpos);
         patrolPoint = new Vector2(randomXpos , transform.position.y);
     }
 

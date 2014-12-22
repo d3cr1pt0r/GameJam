@@ -42,7 +42,7 @@ public class SantaBehaviour : MonoBehaviour {
             {
                 SantaAnimator.SetBool("death",false);
                 time = 0;
-                gameObject.transform.position = spawnPoint.transform.position;
+                //gameObject.transform.position = spawnPoint.transform.position;
             }
         }
 
