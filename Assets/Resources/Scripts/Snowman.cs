@@ -92,14 +92,19 @@ public class Snowman : MonoBehaviour
         }
     }
 
+	public void Kill()
+	{
+		snowmanAnimator.SetBool("death", true);
+		BoxCollider2D tmp = GetComponent<BoxCollider2D>();
+		tmp.size = new Vector2(tmp.size.x, 0.25f);
+		gameObject.layer = 10;
+	}
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            snowmanAnimator.SetBool("death", true);
-            BoxCollider2D tmp = GetComponent<BoxCollider2D>();
-            tmp.size = new Vector2(tmp.size.x, 0.25f);
-            gameObject.layer = 10;
+			Kill ();
         }
     }
 }

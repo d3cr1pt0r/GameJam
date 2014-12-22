@@ -97,8 +97,8 @@ public class TerrainHelper : MonoBehaviour
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
-			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			floors.Add (CreateFloor(new Vector3(pos.x, pos.y, 5), 8));
+			//Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			//floors.Add (CreateFloor(new Vector3(pos.x, pos.y, 5), 8));
 		}
 		
 	}
