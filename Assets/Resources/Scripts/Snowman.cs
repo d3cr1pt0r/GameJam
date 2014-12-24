@@ -96,14 +96,18 @@ public class Snowman : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag.Equals("Player") && !snowmanAnimator.GetBool("death"))
+        if (other.gameObject.tag.Equals("Player") && !snowmanAnimator.GetBool("death") && (transform.position.y + GetComponent<BoxCollider2D>().size.y / 2) < (other.gameObject.transform.position.y /*- other.gameObject.GetComponent<BoxCollider2D>().size.y / 2*/))
         {
             snowmanAnimator.SetBool("death", true);
             BoxCollider2D tmp = GetComponent<BoxCollider2D>();
             tmp.size = new Vector2(tmp.size.x, 0.25f);
             gameObject.layer = 10;
-            GameObject xmasGift = Instantiate(prefabGift,gameObject.transform.position,Quaternion.identity) as GameObject;
-            xmasGift.rigidbody2D.AddForce(new Vector2(40,80));
+            //33 % da dropa gift
+            if (Random.Range(0, 2) == 1)
+            {
+                GameObject xmasGift = Instantiate(prefabGift, gameObject.transform.position, Quaternion.identity) as GameObject;
+                xmasGift.rigidbody2D.AddForce(new Vector2(Random.Range(-80, 80), Random.Range(100, 150)));
+            }
         }
     }
 }

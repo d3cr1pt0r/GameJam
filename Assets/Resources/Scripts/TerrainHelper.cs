@@ -6,18 +6,24 @@ public class TerrainHelper : MonoBehaviour
 {
 	public GameObject TilePrefab;
 	public GameObject SnowmanPrefab;
-	
+	public GameObject XmasTreePrefab;
+	public static int levelCount = 3;
 	public List<Floor> floors;
 	public List<Floor> enemy;
-	
+	public List<Floor> xmasTree;
+
 	public Vector3 previous;
 	void Start ()
 	{
 		floors = new List<Floor> ();
 		enemy = new List<Floor> ();
 		previous = TilePrefab.transform.position;
-		generateTiles (30);
+		generateTiles (levelCount);
+		repositionTiles ();
 		spawnSnowman ();
+		spawnXmasTree();
+		levelCount = levelCount + 5;
+
 		//generateTile ();
 		//generateTile ();
 		
@@ -25,7 +31,7 @@ public class TerrainHelper : MonoBehaviour
 	
 	bool inRange(Vector3 new_pos, Vector3 prev_pos)
 	{
-		if (Vector3.Distance (new_pos, prev_pos) < 5f)
+		if (Vector3.Distance (new_pos, prev_pos) < 9f)
 		{
 			return true;
 			
@@ -42,7 +48,7 @@ public class TerrainHelper : MonoBehaviour
 			
 			if(propability%3 == 0)
 			{
-			Vector3 pos = floors[i].GetPosition();
+				Vector3 pos = floors[i].GetPosition();
 				
 				pos.y +=0.5f;
 				
@@ -50,6 +56,16 @@ public class TerrainHelper : MonoBehaviour
 			}
 		}
 	}
+	void spawnXmasTree()
+	{
+		Vector3 pos = floors[floors.Count-1].GetPosition();
+		pos.y += 0.5f;
+		XmasTreePrefab = GameObject.Instantiate (XmasTreePrefab, pos, Quaternion.identity) as GameObject;
+
+		//xmasTree.Add (CreateXMasTree(new Vector3(pos.x,pos.y, 5)));
+
+	}
+	
 	
 	void generateTiles(int num)
 	{
@@ -58,16 +74,17 @@ public class TerrainHelper : MonoBehaviour
 		
 		Random.seed = (int)System.DateTime.Now.Ticks;
 		float max_up = 2.5f;
-		float max_side = 1.5f;
+		float max_side =8.5f;
 		
 		for (int i =0; i<num; i++)
 		{
-			Vector3 borderPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,Screen.height/2.0f,5));
+			Vector3 borderPos = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.transform.position.x,Camera.main.transform.position.y,5));
 			
-			float max_x= Random.Range (0-borderPos.x-max_side,borderPos.x+max_side);
+			float max_x= Random.Range (borderPos.x-max_side,borderPos.x+max_side);
 			float max_y= Random.Range (max_x, previous.y+max_side);
 			
-			int length = (int)Random.Range (9f, 17f);
+			float upperLimit = 20f-(float)i;
+			int length = (int)Random.Range (9f, 20f);
 			
 			new_pos = new Vector3(max_x, previous.y+max_up, 5);
 			
@@ -76,13 +93,13 @@ public class TerrainHelper : MonoBehaviour
 			
 			while(!inRange(new_pos,previous))
 			{
-				if(new_pos.x < previous.x)
+				if(new_pos.x < previous.x-5.5)
 				{
-					new_pos.x+= 2.5f;
+					new_pos.x+= 8.5f;
 				}
 				else
 				{
-					new_pos.x-= 2.5f;
+					new_pos.x-= 8.5f;
 					
 				}
 			}
@@ -90,10 +107,23 @@ public class TerrainHelper : MonoBehaviour
 			
 			previous.y += max_up;
 			
-			
+
 		}
 	}
-	
+	void repositionTiles()
+	{
+		for (int i =0; i<floors.Count-1; i++)
+		{
+			float dist = Vector3.Distance(floors[i].GetPosition(), floors[i+1].GetPosition());
+			
+			if(dist < 3)
+			{
+				Vector3 pos = floors[i].GetPosition();
+				pos.x +=2.0f;
+				floors[i].SetPostion(pos);
+			}
+		}
+	}
 	void Update ()
 	{
 		if(Input.GetMouseButtonDown(0))
@@ -112,5 +142,9 @@ public class TerrainHelper : MonoBehaviour
 	public Floor CreateEnemy(Vector3 pos)
 	{
 		return new Floor (SnowmanPrefab, pos);
+	}
+	public Floor CreateXMasTree(Vector3 pos)
+	{
+		return new Floor (XmasTreePrefab, pos);
 	}
 }
