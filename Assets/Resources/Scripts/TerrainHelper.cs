@@ -14,8 +14,9 @@ public class TerrainHelper : MonoBehaviour
 	void Start ()
 	{
 		floors = new List<Floor> ();
+		enemy = new List<Floor> ();
 		previous = TilePrefab.transform.position;
-		generateTiles (10);
+		generateTiles (30);
 		spawnSnowman ();
 		//generateTile ();
 		//generateTile ();
@@ -37,15 +38,15 @@ public class TerrainHelper : MonoBehaviour
 		Random.seed = (int)System.DateTime.Now.Ticks;
 		
 		for (int i = 0; i< floors.Count; i++) {
-			float propability = Random.Range (0,floors.Count);
+			float propability = Random.Range (i,floors.Count);
 			
 			if(propability%3 == 0)
 			{
-				Vector3[] pos = floors[i].GetPoints();
+			Vector3 pos = floors[i].GetPosition();
 				
-				pos[1].y +=0.75f;
+				pos.y +=0.5f;
 				
-				floors.Add (CreateEnemy(new Vector3(pos[1].x,pos[1].y, 5)));
+				enemy.Add (CreateEnemy(new Vector3(pos.x,pos.y, 5)));
 			}
 		}
 	}

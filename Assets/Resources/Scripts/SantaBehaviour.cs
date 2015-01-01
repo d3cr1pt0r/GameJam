@@ -3,11 +3,12 @@ using System.Collections;
 
 public class SantaBehaviour : MonoBehaviour {
 
-    //PUBLIC varibales
+    //PUBLIC variables
     //hitrost premkanja
     public float movementSpeed = 0.02f;
     public float jumpForce;
     public Transform spawnPoint;
+    public GameObject xMasStar;
 
     //PRIVATE variables
     //kam je santa obrjen.
@@ -32,7 +33,8 @@ public class SantaBehaviour : MonoBehaviour {
             //handle jump
             Jump();
             //handle hide
-            Hide();
+            if(!SantaAnimator.GetBool("jump"))
+                Hide();
 
             //nastavimo hitrost v animatorju
             SantaAnimator.SetFloat("movement", Mathf.Abs(movementX));
@@ -81,7 +83,7 @@ public class SantaBehaviour : MonoBehaviour {
             BoxCollider2D tmp = GetComponent<BoxCollider2D>();
             tmp.size = new Vector2(tmp.size.x, 0.49f);
             SantaAnimator.SetBool("hide", false);
-            gameObject.layer = 0;
+            gameObject.layer = 11;
         }
     }
 
@@ -117,10 +119,11 @@ public class SantaBehaviour : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag.Equals("Enemy"))
+        if (coll.gameObject.tag.Equals("Enemy") && !SantaAnimator.GetBool("death"))
         {
             rigidbody2D.AddForce(new Vector2(0, 150));
             SantaAnimator.SetBool("death", true);
+            GameObject star = Instantiate(xMasStar, gameObject.transform.position, Quaternion.identity) as GameObject;
         }
     }
 

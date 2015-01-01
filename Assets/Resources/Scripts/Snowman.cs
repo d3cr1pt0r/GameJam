@@ -14,6 +14,8 @@ public class Snowman : MonoBehaviour
 
     private Animator snowmanAnimator;
 
+    public GameObject prefabGift;
+
     private bool ground_collision = false;
 	void Start ()
 	{
@@ -98,11 +100,13 @@ public class Snowman : MonoBehaviour
 		BoxCollider2D tmp = GetComponent<BoxCollider2D>();
 		tmp.size = new Vector2(tmp.size.x, 0.25f);
 		gameObject.layer = 10;
+		GameObject xmasGift = Instantiate(prefabGift,gameObject.transform.position,Quaternion.identity) as GameObject;
+		xmasGift.rigidbody2D.AddForce(new Vector2(40,80));
 	}
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag.Equals("Player"))
+        if (other.gameObject.tag.Equals("Player") && !snowmanAnimator.GetBool("death"))
         {
 			Kill ();
         }
