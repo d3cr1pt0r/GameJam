@@ -46,5 +46,9 @@ public class Floor
 	{
 		return tile.transform.position;
 	}
+	public void SetPostion(Vector3 pos)
+	{
+		this.tile.transform.position = pos;
+	}
 	
 }

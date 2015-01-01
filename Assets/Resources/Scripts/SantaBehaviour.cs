@@ -16,13 +16,13 @@ public class SantaBehaviour : MonoBehaviour {
     private Animator SantaAnimator;
 
     private float movementX;
+    private bool OnGround = false;
 
     private float time = 0;
 
 
 	void Start () {
         SantaAnimator = GetComponent<Animator>();
-
         facingRight = true;
 	}
 	
@@ -46,9 +46,15 @@ public class SantaBehaviour : MonoBehaviour {
             if (time > 1.5f)
             {
                 SantaAnimator.SetBool("death",false);
+                gameObject.tag = "Player";
                 time = 0;
-                //gameObject.transform.position = spawnPoint.transform.position;
+                gameObject.transform.position = new Vector3(0,0,5);
             }
+        }
+
+        if(transform.position.y < -5)
+        {
+            gameObject.transform.position = new Vector3(0, 0, 5);
         }
 
 	}
@@ -110,7 +116,7 @@ public class SantaBehaviour : MonoBehaviour {
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && SantaAnimator.GetBool("jump") == false)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && SantaAnimator.GetBool("jump") == false && OnGround == true)
         {
             SantaAnimator.SetBool("jump", true);
             rigidbody2D.AddForce(new Vector2(0,jumpForce));
@@ -123,6 +129,7 @@ public class SantaBehaviour : MonoBehaviour {
         {
             rigidbody2D.AddForce(new Vector2(0, 150));
             SantaAnimator.SetBool("death", true);
+            gameObject.tag = "Death";
             GameObject star = Instantiate(xMasStar, gameObject.transform.position, Quaternion.identity) as GameObject;
         }
     }
@@ -132,6 +139,13 @@ public class SantaBehaviour : MonoBehaviour {
         if(other.gameObject.tag.Equals("Ground"))
         {
             SantaAnimator.SetBool("jump", false);
+            OnGround = true;
         }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag.Equals("Ground"))
+            OnGround = false;
     }
 }
