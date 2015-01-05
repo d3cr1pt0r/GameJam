@@ -4,16 +4,21 @@ using System.Collections;
 public class PlasmaCannon : MonoBehaviour
 {
 	public GameObject ProjectilePrefab;
-	private int amount;
+	public int amount;
 
 	void Start()
 	{
-		amount = 5;
+		amount = 0;
+	}
+
+	public void SetAmount(int a)
+	{
+		this.amount = a;
 	}
 
 	void Update()
 	{
-		if (Input.GetMouseButtonDown (0))
+		if (Input.GetMouseButtonDown (0) && amount > 0)
 		{
 			Vector3 pos = new Vector3(transform.position.x, transform.position.y, 2.9f);
 			GameObject projectile = Instantiate(ProjectilePrefab, pos, Quaternion.identity) as GameObject;
